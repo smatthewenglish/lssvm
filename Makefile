@@ -16,14 +16,14 @@ SOLC_VERSION := 0_8_10
 solc:; nix-env -f https://github.com/dapphub/dapptools/archive/master.tar.gz -iA solc-static-versions.solc_${SOLC_VERSION}
 
 # Build & test
-build  :; forge build --optimize --optimize-runs 1000000
-test   :; forge test --optimize --optimize-runs 1000000 # --ffi # enable if you need the `ffi` cheat code on HEVM
-fuzz   :; forge test -v --optimize --optimize-runs 1000000
+build  :; forge build --optimize --optimizer-runs 1000000
+test   :; forge test --optimize --optimizer-runs 1000000 # --ffi # enable if you need the `ffi` cheat code on HEVM
+fuzz   :; forge test -v --optimize --optimizer-runs 1000000
 clean  :; forge clean
 lint   :; yarn run lint
 estimate :; ./scripts/estimate-gas.sh ${contract}
 size   :; ./scripts/contract-size.sh ${contract}
-snapshot :; forge snapshot --optimize --optimize-runs 1000000
+snapshot :; forge snapshot --optimize --optimizer-runs 1000000
 test-deploy :; ./scripts/test-deploy.sh
 
 # Deployment helpers

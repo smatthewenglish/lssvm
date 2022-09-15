@@ -83,13 +83,21 @@ contract LinearCurve is ICurve, CurveErrorCodes {
             2;
 
         // Account for the protocol fee, a flat percentage of the buy amount
-        protocolFee = inputValue.fmul(
-            protocolFeeMultiplier,
-            FixedPointMathLib.WAD
+        // protocolFee = inputValue.fmul(
+        //     protocolFeeMultiplier,
+        //     FixedPointMathLib.WAD
+        // );
+        protocolFee = FixedPointMathLib.mulWadDown(
+            inputValue,
+            protocolFeeMultiplier
         );
 
         // Account for the trade fee, only for Trade pools
-        inputValue += inputValue.fmul(feeMultiplier, FixedPointMathLib.WAD);
+        //inputValue += inputValue.fmul(feeMultiplier, FixedPointMathLib.WAD);
+        inputValue += FixedPointMathLib.mulWadDown(
+            inputValue,
+            FixedPointMathLib.WAD
+        );
 
         // Add the protocol fee to the required input amount
         inputValue += protocolFee;
@@ -165,13 +173,18 @@ contract LinearCurve is ICurve, CurveErrorCodes {
         }
 
         // Account for the protocol fee, a flat percentage of the sell amount
-        protocolFee = outputValue.fmul(
-            protocolFeeMultiplier,
-            FixedPointMathLib.WAD
+        // protocolFee = outputValue.fmul(
+        //     protocolFeeMultiplier,
+        //     FixedPointMathLib.WAD
+        // );
+        protocolFee = FixedPointMathLib.mulWadDown(
+            outputValue,
+            protocolFeeMultiplier
         );
 
         // Account for the trade fee, only for Trade pools
-        outputValue -= outputValue.fmul(feeMultiplier, FixedPointMathLib.WAD);
+        //outputValue -= outputValue.fmul(feeMultiplier, FixedPointMathLib.WAD);
+        outputValue -= FixedPointMathLib.mulWadDown(outputValue, feeMultiplier);
 
         // Subtract the protocol fee from the output amount to the seller
         outputValue -= protocolFee;
